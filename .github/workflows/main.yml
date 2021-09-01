@@ -14,10 +14,13 @@ jobs:
     steps:
       - name: Generate and publish EiffelSourceChangeCreatedEvent
         id: publish-event
-        uses: fdegir/ega@v17
+        uses: fdegir/ega@v18
+        env:
+          EIFFEL_MP: 'eiffelsemantics'
+          EIFFEL_MSG_TYPE: 'EiffelSourceChangeCreatedEvent'
         with:
-          mp: 'eiffelsemantics'
-          eiffel_event_type: 'EiffelSourceChangeCreatedEvent'
+          remrem_generate_service_url: 'http://89.46.83.162:8081/'
+          remrem_publish_service_url: 'http://89.46.83.162:8080/generateAndPublish'
       - name: Display generated EiffelSourceChangeCreatedEvent
         run: echo "Generated EiffelSourceChangeCreatedEvent ${{ steps.publish-event.outputs.event_body }}"
   # Generate and publish EiffelSourceChangeSubmittedEvent for pushes and merged PRs
@@ -28,9 +31,12 @@ jobs:
     steps:
       - name: Query Eiffel Events step
         id: publish-event
-        uses: fdegir/ega@v17
+        uses: fdegir/ega@v18
+        env:
+          EIFFEL_MP: 'eiffelsemantics'
+          EIFFEL_MSG_TYPE: 'EiffelSourceChangeSubmittedEvent'
         with:
-          mp: 'eiffelsemantics'
-          eiffel_event_type: 'EiffelSourceChangeSubmittedEvent'
+          remrem_generate_service_url: 'http://89.46.83.162:8081/'
+          remrem_publish_service_url: 'http://89.46.83.162:8080/generateAndPublish'
       - name: Display generated EiffelSourceChangeSubmittedEvent
         run: echo "Generated EiffelSourceChangeSubmittedEvent ${{ steps.publish-event.outputs.event_body }}"
