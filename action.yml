@@ -1,20 +1,5 @@
 name: 'Generate and publish Eiffel Events'
 description: 'Generate and publish Eiffel Events using Eiffel REMReM Generate Service'
-inputs:
-  mp:  # message protocol
-    description: 'Message Protocol'
-    required: true
-    default: 'eiffelsemantics'
-  eiffel_event_type:  # Eiffel event type to generate and publish
-    description: 'Eiffel event type'
-    required: true
-    default: 'EiffelSourceChangeCreatedEvent'
-outputs:
-  event_body: # body of the generated event
-    description: 'Body of the generated event'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.mp }}
-    - ${{ inputs.eiffel_event_type }}
