@@ -5,6 +5,10 @@ inputs:
     description: 'Message Protocol'
     required: true
     default: 'eiffelsemantics'
+  eiffel_event_type:  # Eiffel event type to generate and publish
+    description: 'Eiffel event type'
+    required: true
+    default: 'EiffelSourceChangeCreatedEvent'
 outputs:
   event_list: # list of Eiffel Events for given message protocol
     description: 'List of Eiffel Events'
@@ -13,3 +17,4 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.mp }}
+    - ${{ inputs.eiffel_event_type }}

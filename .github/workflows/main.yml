@@ -15,7 +15,7 @@ jobs:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v11
+        uses: fdegir/ega@v12
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeCreatedEvent'
@@ -31,7 +31,7 @@ jobs:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v11
+        uses: fdegir/ega@v12
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeSubmittedEvent'
