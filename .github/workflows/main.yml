@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Generate and publish EiffelSourceChangeCreatedEvent
         id: publish-event
-        uses: fdegir/ega@v20
+        uses: fdegir/ega@v21
         env:
           eiffel_mp: 'eiffelsemantics'
           eiffel_message_type: 'EiffelSourceChangeCreatedEvent'
@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Generate and publish EiffelSourceChangeSubmittedEvent
         id: publish-event
-        uses: fdegir/ega@v20
+        uses: fdegir/ega@v21
         env:
           eiffel_mp: 'eiffelsemantics'
           eiffel_message_type: 'EiffelSourceChangeSubmittedEvent'
