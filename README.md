@@ -1,22 +1,24 @@
 # Eiffel GitHub Action
 
-This action is the initial version of Eiffel GitHub Action.
-It currently fetches list of Eiffel Events from Eiffel REMReM Generate Service for given message protocol.
+This action is created to demonstrate [Eiffel Community](https://github.com/eiffel-community) projects and should not be used for anything real.
 
-## Inputs
+For the purposes of the demo, the action publishes
 
-## `mp`
+* [EiffelSourceChangeCreatedEvent](https://github.com/eiffel-community/eiffel/blob/master/eiffel-vocabulary/EiffelSourceChangeCreatedEvent.md) when a new PR is opened or an existing PR is reopened
+* [EiffelSourceChangeSubmittedEvent](https://github.com/eiffel-community/eiffel/blob/master/eiffel-vocabulary/EiffelSourceChangeSubmittedEvent.md) when a PR is merged or a commit is pused to repo directly
 
-**Required** The message protocol to use. Default `"eiffelsemantics"`.
+using [Eiffel REMReM Publish Service](https://github.com/eiffel-community/eiffel-remrem-publish).
 
-## Outputs
+# Inputs
 
-## `event_list`
+## `remrem_publish_service_url`
 
-List of Eiffel Events for given message protocol.
+**Required** URL to Eiffel REMReM Publish Service. Default `"http://89.46.83.162:8080/generateAndPublish"`.
 
-## Example usage
+# Example usage
 
-uses: actions/ega@v1
+```
+uses: actions/ega@v24
 with:
-  mp: 'eiffelsemantics'
+  remrem_publish_service_url: 'http://your/remrem/publis/service/generateAndPublish'
+```

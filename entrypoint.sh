@@ -19,7 +19,7 @@ generate_escc() {
         "group": "n/a"
       },
       "gitIdentifier": {
-        "repoName": "meridio",
+        "repoName": "$GITHUB_REPOSITORY",
         "repoUri": "$GITHUB_REPO_URI",
         "branch": "master",
         "commitId": "$GITHUB_SHA"
@@ -55,7 +55,7 @@ generate_escs() {
         "group": "n/a"
       },
       "gitIdentifier": {
-        "repoName": "meridio",
+        "repoName": "$GITHUB_REPOSITORY",
         "repoUri": "$GITHUB_REPO_URI",
         "branch": "master",
         "commitId": "$GITHUB_SHA"
