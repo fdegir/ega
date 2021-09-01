@@ -1,18 +1,12 @@
 name: 'Generate and publish Eiffel Events'
 description: 'Generate and publish Eiffel Events using Eiffel REMReM Generate Service'
 inputs:
-  remrem_generate_service_url:
-    description: 'URL to eiffel REMReM Generate Service'
-    required: true
-    default: 'http://89.46.83.162:8081/'
   remrem_publish_service_url:
-    description: 'URL to eiffel REMReM Publish Service'
+    description: 'URL to Eiffel REMReM Publish Service'
     required: true
-    # using generateAndPublish for the sake of simplicity at this phase
     default: 'http://89.46.83.162:8080/generateAndPublish'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.remrem_generate_service_url }}
     - ${{ inputs.remrem_publish_service_url }}
