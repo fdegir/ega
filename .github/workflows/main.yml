@@ -2,6 +2,8 @@ on:
   push:
     tags-ignore:
       - '*.*'
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
   eiffel_remrem_generate_job:
