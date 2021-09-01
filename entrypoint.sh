@@ -13,7 +13,7 @@ cat $GITHUB_EVENT_PATH
 echo "-------------------------------------------------"
 echo "Info  : Generating $EIFFEL_EVENT_TYPE using REMReM Generate Service"
 echo "Info  : Done!"
-$event_body=$EIFFEL_EVENT_TYPE
+event_body=$EIFFEL_EVENT_TYPE
 echo "::set-output name=event_body::$event_body"
 exit 0
 
