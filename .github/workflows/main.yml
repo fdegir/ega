@@ -3,19 +3,38 @@ on:
     tags-ignore:
       - '*.*'
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, closed]
 
 jobs:
-  eiffel_remrem_generate_job:
+  # Send EiffelSourceChangeCreatedEvent for PRs opened or reopened
+  send_escc:
+    if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened')
     runs-on: ubuntu-20.04
-    name: A job to get Eiffel Events from Eiffel REMReM Generate Service
+    name: A job to send EiffelSourceChangeCreatedEvent
     steps:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v9
+        uses: fdegir/ega@v10
         with:
           mp: 'eiffelsemantics'
+          eiffel_event_type: 'EiffelSourceChangeCreatedEvent'
+      # Use the output from the `get-events` step
+      - name: Display Eiffel Events step
+        run: echo "The list of available Eiffel Events is ${{ steps.get-events.outputs.event_list }}"
+  # Send EiffelSourceChangeSubmittedEvent for pushes and merged PRs
+  send_escc:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-20.04
+    name: A job to send EiffelSourceChangeSubmittedEvent
+    steps:
+      # Query Eiffel REMReM Generate Service for available events
+      - name: Query Eiffel Events step
+        id: get-events
+        uses: fdegir/ega@v10
+        with:
+          mp: 'eiffelsemantics'
+          eiffel_event_type: 'EiffelSourceChangeSubmittedEvent'
       # Use the output from the `get-events` step
       - name: Display Eiffel Events step
         run: echo "The list of available Eiffel Events is ${{ steps.get-events.outputs.event_list }}"
