@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  eiffel_remrem_generate_job:
+    runs-on: ubuntu-20.04
+    name: A job to get Eiffel Events from Eiffel REMReM Generate Service
+    steps:
+      # Query Eiffel REMReM Generate Service for available events
+      - name: Query Eiffel Events step
+        id: get-events
+        uses: actions/ega@v1
+        with:
+          mp: 'eiffelsemantics'
+      # Use the output from the `get-events` step
+      - name: Display Eiffel Events step
+        run: echo "The list of available Eiffel Events is ${{ steps.get-events.outputs.event_list }}"
