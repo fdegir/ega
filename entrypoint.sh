@@ -101,7 +101,7 @@ case ${eiffel_message_type} in
     ;;
 esac
 
-PUBLISH_URL="${remrem_publish_service_url}?mp=${eiffel_mp}&msgType=${eiffel_msg_type}"
+PUBLISH_URL="${remrem_publish_service_url}?mp=${eiffel_mp}&msgType=${eiffel_message_type}"
 PUBLISH_CMD="curl -H Content-Type:application/json -X POST --data-binary @$EIFFEL_MSG_FILE $PUBLISH_URL"
 
 echo "Info  : Generated event $eiffel_message_type"
@@ -111,6 +111,7 @@ echo "-------------------------------------------------"
 echo "Info  : Publishing event using Eiffel REMReM Publish Service via command"
 echo "-------------------------------------------------"
 echo "$PUBLISH_CMD"
+$PUBLISH_CMD
 echo "-------------------------------------------------"
 echo "Info  : GitHub event.json content"
 echo "-------------------------------------------------"
