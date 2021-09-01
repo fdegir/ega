@@ -1,4 +1,7 @@
-on: [push]
+on:
+  push:
+    tags-ignore:
+      - '*.*'
 
 jobs:
   eiffel_remrem_generate_job:
@@ -8,7 +11,7 @@ jobs:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v8
+        uses: fdegir/ega@v9
         with:
           mp: 'eiffelsemantics'
       # Use the output from the `get-events` step
