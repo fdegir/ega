@@ -1,5 +1,77 @@
 #!/bin/sh
 
+generate_escc() {
+  EIFFEL_MSG_FILE="$1"
+  cat <<EOF > "$EIFFEL_MSG_FILE"
+{
+  "msgParams": {
+    "meta": {
+      "type": "EiffelSourceChangeCreatedEvent",
+      "version": "4.0.0"
+    }
+  },
+  "eventParams": {
+    "data": {
+      "author": {
+        "name": "$GITHUB_ACTOR",
+        "email": "$GITHUB_ACTOR",
+        "id": "$GITHUB_ACTOR",
+        "group": "n/a"
+      },
+      "gitIdentifier": {
+        "repoName": "meridio",
+        "repoUri": "$GITHUB_REPO_URI",
+        "branch": "master",
+        "commitId": "$GITHUB_SHA"
+      },
+      "customData": [
+        {
+          "key": "pr_no",
+          "value": "n/a"
+        }
+      ]
+    }
+  }
+}
+EOF
+}
+
+generate_escs() {
+  EIFFEL_MSG_FILE="$1"
+  cat <<EOF > "$EIFFEL_MSG_FILE"
+{
+  "msgParams": {
+    "meta": {
+      "type": "EiffelSourceChangeSubmittedEvent",
+      "version": "3.0.0"
+    }
+  },
+  "eventParams": {
+    "data": {
+      "submitter": {
+        "name": "$GITHUB_ACTOR",
+        "email": "$GITHUB_ACTOR",
+        "id": "$GITHUB_ACTOR",
+        "group": "n/a"
+      },
+      "gitIdentifier": {
+        "repoName": "meridio",
+        "repoUri": "$GITHUB_REPO_URI",
+        "branch": "master",
+        "commitId": "$GITHUB_SHA"
+      },
+      "customData": [
+        {
+          "key": "pr_no",
+          "value": "n/a"
+        }
+      ]
+    }
+  }
+}
+EOF
+}
+
 remrem_generate_service_url=$1
 remrem_publish_service_url=$2
 #REMREM_COMMAND="curl -X GET --header 'Accept: application/json' \"http://89.46.83.162:8081/event_types/$EIFFEL_MP\""
@@ -7,22 +79,45 @@ remrem_publish_service_url=$2
 #echo "Info  : Command to run is"
 #echo "        $REMREM_COMMAND"
 #event_list=$($REMREM_COMMAND)
+echo "Info  : Generating and publishing Eiffel Event"
+echo "-------------------------------------------------"
+echo "        Eiffel Message Protocol:  $eiffel_mp"
+echo "        Eiffel Message Type: $eiffel_message_type"
+echo "        Eiffel REMReM Generate Service URL: $remrem_generate_service_url"
+echo "        Eiffel REMReM Publish Service URL: $remrem_publish_service_url"
+echo "-------------------------------------------------"
+
+# set some vars
+GITHUB_REPO_URI="https://github.com/$GITHUB_REPOSITORY"
+EIFFEL_MSG_FILE="$GITHUB_WORKSPACE/eiffel_event.json"
+
+rm -rf "$EIFFEL_MSG_FILE"
+
+case ${eiffel_message_type} in
+  EiffelSourceChangeCreatedEvent)
+    generate_escc "$EIFFEL_MSG_FILE"
+    ;;
+  EiffelSourceChangeSubmittedEvent)
+    generate_escs "$EIFFEL_MSG_FILE"
+    ;;
+  *)
+    echo "Error : Invalid event type $eiffel_message_type"
+    exit 1
+    ;;
+esac
+
+echo "Info  : Generated event $eiffel_message_type"
+echo "-------------------------------------------------"
+cat "$EIFFEL_MSG_FILE"
+echo "-------------------------------------------------"
+echo "Info  : Publishing event using Eiffel REMReM Publish Service"
+echo "-------------------------------------------------"
+PUBLISH_URL="${remrem_publish_service_url}?mp=${EIFFEL_MP}&msgType=${EIFFEL_MSG_TYPE}"
+curl -H "Content-Type: application/json" -X POST --data-binary "@$EIFFEL_MSG_FILE" $PUBLISH_URL
+echo "-------------------------------------------------"
 echo "Info  : GitHub event.json content"
 echo "-------------------------------------------------"
 cat $GITHUB_EVENT_PATH
 echo "-------------------------------------------------"
-echo "Info  : Generating and publishing Eiffel Event"
-echo "        Eiffel Message Protocol:  $EIFFEL_MP"
-echo "        Eiffel Message Type: $EIFFEL_MSG_TYPE"
-echo "        Eiffel REMReM Generate Service URL: $remrem_generate_service_url"
-echo "        Eiffel REMReM Publish Service URL: $remrem_publish_service_url"
-event_body=$EIFFEL_MSG_TYPE
-echo "::set-output name=event_body::$event_body"
 echo "Info  : Done!"
 exit 0
-
-echo "Info  : Environment variables"
-echo "-------------------------------------------------"
-env
-#echo HOME -e GITHUB_JOB -e GITHUB_REF -e GITHUB_SHA -e GITHUB_REPOSITORY -e GITHUB_REPOSITORY_OWNER -e GITHUB_RUN_ID -e GITHUB_RUN_NUMBER -e GITHUB_RETENTION_DAYS -e GITHUB_ACTOR -e GITHUB_WORKFLOW -e GITHUB_HEAD_REF -e GITHUB_BASE_REF -e GITHUB_EVENT_NAME -e GITHUB_SERVER_URL -e GITHUB_API_URL -e GITHUB_GRAPHQL_URL -e GITHUB_WORKSPACE -e GITHUB_ACTION -e GITHUB_EVENT_PATH -e GITHUB_ACTION_REPOSITORY -e GITHUB_ACTION_REF -e GITHUB_PATH -e GITHUB_ENV -e RUNNER_OS -e RUNNER_TOOL_CACHE -e RUNNER_TEMP -e RUNNER_WORKSPACE -e ACTIONS_RUNTIME_URL -e ACTIONS_RUNTIME_TOKEN -e ACTIONS_CACHE_URL
-echo "-------------------------------------------------"

@@ -14,29 +14,24 @@ jobs:
     steps:
       - name: Generate and publish EiffelSourceChangeCreatedEvent
         id: publish-event
-        uses: fdegir/ega@v18
+        uses: fdegir/ega@v19
         env:
-          EIFFEL_MP: 'eiffelsemantics'
-          EIFFEL_MSG_TYPE: 'EiffelSourceChangeCreatedEvent'
+          eiffel_mp: 'eiffelsemantics'
+          eiffel_message_type: 'EiffelSourceChangeCreatedEvent'
         with:
           remrem_generate_service_url: 'http://89.46.83.162:8081/'
           remrem_publish_service_url: 'http://89.46.83.162:8080/generateAndPublish'
-      - name: Display generated EiffelSourceChangeCreatedEvent
-        run: echo "Generated EiffelSourceChangeCreatedEvent ${{ steps.publish-event.outputs.event_body }}"
-  # Generate and publish EiffelSourceChangeSubmittedEvent for pushes and merged PRs
   send_escs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-20.04
     name: Generate and publish EiffelSourceChangeSubmittedEvent
     steps:
-      - name: Query Eiffel Events step
+      - name: Generate and publish EiffelSourceChangeSubmittedEvent
         id: publish-event
-        uses: fdegir/ega@v18
+        uses: fdegir/ega@v19
         env:
-          EIFFEL_MP: 'eiffelsemantics'
-          EIFFEL_MSG_TYPE: 'EiffelSourceChangeSubmittedEvent'
+          eiffel_mp: 'eiffelsemantics'
+          eiffel_message_type: 'EiffelSourceChangeSubmittedEvent'
         with:
           remrem_generate_service_url: 'http://89.46.83.162:8081/'
           remrem_publish_service_url: 'http://89.46.83.162:8080/generateAndPublish'
-      - name: Display generated EiffelSourceChangeSubmittedEvent
-        run: echo "Generated EiffelSourceChangeSubmittedEvent ${{ steps.publish-event.outputs.event_body }}"
