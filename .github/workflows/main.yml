@@ -6,35 +6,31 @@ on:
     types: [opened, reopened, closed]
 
 jobs:
-  # Send EiffelSourceChangeCreatedEvent for PRs opened or reopened
+  # Generate and publish EiffelSourceChangeCreatedEvent for PRs opened or reopened
   send_escc:
     if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened')
     runs-on: ubuntu-20.04
-    name: A job to send EiffelSourceChangeCreatedEvent
+    name: Generate and publish EiffelSourceChangeCreatedEvent
     steps:
-      # Query Eiffel REMReM Generate Service for available events
-      - name: Query Eiffel Events step
-        id: get-events
-        uses: fdegir/ega@v12
+      - name: Generate and publish EiffelSourceChangeCreatedEvent
+        id: publish-event
+        uses: fdegir/ega@v13
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeCreatedEvent'
-      # Use the output from the `get-events` step
-      - name: Display Eiffel Events step
-        run: echo "The list of available Eiffel Events is ${{ steps.get-events.outputs.event_list }}"
-  # Send EiffelSourceChangeSubmittedEvent for pushes and merged PRs
+      - name: Display generated EiffelSourceChangeCreatedEvent
+        run: echo "Generated EiffelSourceChangeCreatedEvent: ${{ steps.send_escc.outputs.event_body }}"
+  # Generate and publish EiffelSourceChangeSubmittedEvent for pushes and merged PRs
   send_escs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-20.04
-    name: A job to send EiffelSourceChangeSubmittedEvent
+    name: Generate and publish EiffelSourceChangeSubmittedEvent
     steps:
-      # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
-        id: get-events
-        uses: fdegir/ega@v12
+        id: publish-event
+        uses: fdegir/ega@v13
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeSubmittedEvent'
-      # Use the output from the `get-events` step
-      - name: Display Eiffel Events step
-        run: echo "The list of available Eiffel Events is ${{ steps.get-events.outputs.event_list }}"
+      - name: Display generated EiffelSourceChangeSubmittedEvent
+        run: echo "Generated EiffelSourceChangeSubmittedEvent: ${{ steps.send_escs.outputs.event_body }}"

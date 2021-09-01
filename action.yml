@@ -1,5 +1,5 @@
-name: 'Get Eiffel Events'
-description: 'Get Eiffel Events from Eiffel REMReM Generate Service'
+name: 'Generate and publish Eiffel Events'
+description: 'Generate and publish Eiffel Events using Eiffel REMReM Generate Service'
 inputs:
   mp:  # message protocol
     description: 'Message Protocol'
@@ -10,8 +10,8 @@ inputs:
     required: true
     default: 'EiffelSourceChangeCreatedEvent'
 outputs:
-  event_list: # list of Eiffel Events for given message protocol
-    description: 'List of Eiffel Events'
+  event_body: # body of the generated event
+    description: 'Body of the generated event'
 runs:
   using: 'docker'
   image: 'Dockerfile'
