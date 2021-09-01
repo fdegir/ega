@@ -8,7 +8,7 @@ jobs:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v2
+        uses: fdegir/ega@v3
         with:
           mp: 'eiffelsemantics'
       # Use the output from the `get-events` step
