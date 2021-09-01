@@ -14,12 +14,12 @@ jobs:
     steps:
       - name: Generate and publish EiffelSourceChangeCreatedEvent
         id: publish-event
-        uses: fdegir/ega@v13
+        uses: fdegir/ega@v14
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeCreatedEvent'
       - name: Display generated EiffelSourceChangeCreatedEvent
-        run: echo "Generated EiffelSourceChangeCreatedEvent: ${{ steps.send_escc.outputs.event_body }}"
+        run: echo "Generated EiffelSourceChangeCreatedEvent: ${{ steps.publish-event.outputs.event_body }}"
   # Generate and publish EiffelSourceChangeSubmittedEvent for pushes and merged PRs
   send_escs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
@@ -28,9 +28,9 @@ jobs:
     steps:
       - name: Query Eiffel Events step
         id: publish-event
-        uses: fdegir/ega@v13
+        uses: fdegir/ega@v14
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeSubmittedEvent'
       - name: Display generated EiffelSourceChangeSubmittedEvent
-        run: echo "Generated EiffelSourceChangeSubmittedEvent: ${{ steps.send_escs.outputs.event_body }}"
+        run: echo "Generated EiffelSourceChangeSubmittedEvent: ${{ steps.publish-event.outputs.event_body }}"
