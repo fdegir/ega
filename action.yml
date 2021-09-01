@@ -1,0 +1,15 @@
+name: 'Get Eiffel Events'
+description: 'Get Eiffel Events from Eiffel REMReM Generate Service'
+inputs:
+  mp:  # message protocol
+    description: 'Message Protocol'
+    required: true
+    default: 'eiffelsemantics'
+outputs:
+  event_list: # list of Eiffel Events for given message protocol
+    description: 'List of Eiffel Events'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.mp }}
