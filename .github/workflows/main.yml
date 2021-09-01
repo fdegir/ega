@@ -15,7 +15,7 @@ jobs:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v10
+        uses: fdegir/ega@v11
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeCreatedEvent'
@@ -23,7 +23,7 @@ jobs:
       - name: Display Eiffel Events step
         run: echo "The list of available Eiffel Events is ${{ steps.get-events.outputs.event_list }}"
   # Send EiffelSourceChangeSubmittedEvent for pushes and merged PRs
-  send_escc:
+  send_escs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-20.04
     name: A job to send EiffelSourceChangeSubmittedEvent
@@ -31,7 +31,7 @@ jobs:
       # Query Eiffel REMReM Generate Service for available events
       - name: Query Eiffel Events step
         id: get-events
-        uses: fdegir/ega@v10
+        uses: fdegir/ega@v11
         with:
           mp: 'eiffelsemantics'
           eiffel_event_type: 'EiffelSourceChangeSubmittedEvent'
